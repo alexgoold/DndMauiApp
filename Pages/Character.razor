@@ -1,0 +1,80 @@
+﻿@page "/Character"
+@using DndMauiApp.Data.Models
+@using DndMauiApp.Data.Repositories
+@using DndMauiApp.Data.Repositories.Interfaces
+@using DndMauiApp.Data.Enums
+<h3>Character</h3>
+
+<select @onchange="GetByName" class="form-control">
+	<option>Choose A Customer</option>
+	@foreach (var character in CharacterList)
+	{
+		<option value="@character.Name">@character.Name</option>
+	}
+</select>
+
+<EditForm Model="@ActiveCharacter" OnValidSubmit="@HandleValidSubmit">
+
+	<div class="form-group">
+		<label for="name">Name:</label>
+		<InputText id="name" class="form-control" @bind-Value="@ActiveCharacter.Name" />
+	</div>
+
+	<div class="form-group">
+		<select @bind="ActiveCharacter.Race" class="form-select border-secondary">
+			<option selected>...</option>
+			@foreach (var thing in Race.GetValues<Race>())
+			{
+				<option value="@thing">@thing</option>
+			}
+		</select>
+	</div>
+
+	<div class="form-group">
+		<label for="class">Class:</label>
+		<InputSelect id="class" class="form-control" @bind-Value="@ActiveCharacter.CharacterClass" />
+	</div>
+
+	<div class="form-group">
+		<label for="level">Level:</label>
+		<InputNumber id="level" class="form-control" @bind-Value="@ActiveCharacter.Level" />
+	</div>
+
+	<button type="submit" class="btn btn-primary">Save</button>
+</EditForm>
+
+
+
+@code {
+	public List<CharacterModel> CharacterList = new();
+
+	public CharacterModel ActiveCharacter { get; set; } = new();
+
+	public ICharacterRepository CharacterRepository = new CharacterRepository();
+
+	protected override async Task OnInitializedAsync()
+	{
+		await GetCharacters();
+	}
+
+	public async Task<List<CharacterModel>> GetCharacters()
+	{
+		var chars = await CharacterRepository.GetAllAsync();
+
+		if (chars != null)
+			return chars.ToList();
+
+		return new List<CharacterModel>();
+	}
+
+	private Task GetByName(ChangeEventArgs arg)
+	{
+		throw new NotImplementedException();
+	}
+
+	private Task HandleValidSubmit()
+	{
+		throw new NotImplementedException();
+	}
+
+}

@@ -1,0 +1,16 @@
+﻿@page "/Carousal"
+<h3>Carousal</h3>
+<div class="container justify-content-center align-items-center">
+	<label class="text-primary">@result</label>
+	<button @onclick="() => Carouse()" class="btn btn-dark">Test</button>
+</div>
+
+@code {
+	public string result { get; set; } = string.Empty;
+
+	private Task Carouse()
+	{
+		throw new NotImplementedException();
+	}
+
+}

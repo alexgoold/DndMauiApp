@@ -1,0 +1,99 @@
+﻿@page "/counter"
+@using DndMauiApp.Data.Repositories
+
+<h1 class="text-center">Yes or No</h1>
+<div class="container-fluid">
+	<div class="card text-center border-0">
+		<div class="card-body">
+			<h5 class="card-title">Results</h5>
+		</div>
+	</div>
+</div>
+<div class="p-5 text-center">
+	<h1>@Result
+		<small class="text-muted"></small>
+		</h1>
+</div>
+<div class="p-5"></div>
+<div class="container-fluid">
+	<div class="card text-center border-0">
+		<div class="card-body">
+			<h5 class="card-title">Pose a yes or no question</h5>
+			<p class="card-text">Choose the likely-hood and click roll!</p>
+			<div class="align-items-end">
+				<select @onchange="SelectLikelyhood" class="form-control">
+					<option>...</option>
+					@foreach (var likelyhood in Options)
+					{
+						<option class="text-center" value="@likelyhood">@likelyhood</option>
+					}
+				</select>
+			</div>
+			<button class="btn btn-dark m-2" @onclick="RollForResult">ROLL</button>
+		</div>
+	</div>
+</div>
+
+
+
+@code {
+	public List<string> Options { get; set; } = new List<string> { "Impossible", "Highly Unlikely", "Unlikely", "Possible", "Likely", "Highly Likely", "A Certainty" };
+	public string Likelyhood { get; set; }
+	public string Result { get; set; }
+	public string VerboseResult { get; set; }
+
+	private void SelectLikelyhood(ChangeEventArgs obj)
+	{
+		Likelyhood = obj.Value.ToString();
+
+	}
+
+	private void RollForResult()
+	{
+		var d20 = new Random();
+		var answer = d20.Next(1, 21);
+		var modifier = 0;
+
+		switch (Likelyhood)
+		{
+			case "Impossible":
+				modifier = -6;
+				break;
+			case "Highly Unlikely":
+				modifier = -4;
+				break;
+			case "Unlikely":
+				modifier = -2;
+				break;
+			case "Possible":
+				break;
+			case "Likely":
+				modifier = +2;
+				break;
+			case "Highly Likely":
+				modifier = +4;
+				break;
+			case "A Certainty":
+				modifier = +6;
+				break;
+				default:
+					modifier = 0;
+					break;
+		}
+		if (answer + modifier < 7)
+		{
+			Result = $"NO ({answer + modifier})";
+		}
+		else if (answer + modifier is > 6 and < 13)
+		{
+			Result = $"MAYBE ({answer + modifier})";
+
+		}
+		else
+		{
+			Result = $"YES ({answer + modifier})";
+
+		}
+	}
+
+}
