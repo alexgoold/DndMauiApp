@@ -1,6 +1,24 @@
 ﻿@page "/NPC"
-<h3>NPC</h3>
+@using DndMauiApp.Data.Models
+<h3>Npc</h3>
+<div class="container">
+
+<div class="card">
+	<div class="card-body">
+		<h5 class="card-title">Name: @npc.FirstName</h5>
+		<p class="card-text">Last Name: @npc.LastName</p>
+		<p class="card-text">Race: @npc.Race</p>
+		<p class="card-text">Profession: @npc.Profession</p>
+		<p class="card-text">Age: @npc.Age</p>
+		<p class="card-text">Alignment: @npc.Alignment</p>
+		<p class="card-text">Disposition: @npc.Disposition</p>
+		<p class="card-text">Description: @npc.Description</p>
+	</div>
+</div>
+</div>
 
 @code {
-	
+
+	public Npc npc { get; set; } = new();
+
 }

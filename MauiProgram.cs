@@ -20,21 +20,21 @@ public static class MauiProgram
 		builder.Services.AddMauiBlazorWebView();
 		builder.Services.AddScoped<ICharacterRepository, CharacterRepository>();
 		builder.Services.AddScoped<ICarousalRepository, CarousalRepository>();
+		builder.Services.AddScoped<INamesRepository, NamesRepository>();
 
-		var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "FirstNames.txt");
+		//var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "LastNames.txt");
 
-		var FirstNames = File.ReadAllLines(path)
-			.Select(x => x.Split('.'))
-			.Select(x => new CarousalModel
-			{
-				Number = int.Parse(x[0]),
-				Description = x[1].Remove(0, 1)
-			});
+		//var FirstNames = File.ReadAllLines(path)
+		//	.Select(x => new NameModel()
+		//	{
+		//		Name = x,
+		//		IsFirstName = false
+		//	});
 
-		foreach (var result in FirstNames)
-		{
-			_namesRepository.AddAsync(result);
-		}
+		//foreach (var result in FirstNames)
+		//{
+		//	_namesRepository.AddAsync(result);
+		//}
 
 #if DEBUG
 		builder.Services.AddBlazorWebViewDeveloperTools();

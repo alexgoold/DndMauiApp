@@ -29,7 +29,7 @@ public class CarousalRepository :ICarousalRepository
 
 	public async Task<IEnumerable<CarousalModel>> GetAllAsync()
 	{
-		throw new NotImplementedException();
+		return await _carousals.Find(x => true).ToListAsync();
 	}
 
 	public async Task<CarousalModel> AddAsync(CarousalModel entity)

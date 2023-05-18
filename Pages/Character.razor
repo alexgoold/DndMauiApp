@@ -6,7 +6,7 @@
 <h3>Character</h3>
 
 <select @onchange="GetByName" class="form-control">
-	<option>Choose A Customer</option>
+	<option>Choose A Character</option>
 	@foreach (var character in CharacterList)
 	{
 		<option value="@character.Name">@character.Name</option>

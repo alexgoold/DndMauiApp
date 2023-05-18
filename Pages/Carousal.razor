@@ -1,16 +1,32 @@
 ﻿@page "/Carousal"
+@using DndMauiApp.Data.Repositories
+@using DndMauiApp.Data.Models
 <h3>Carousal</h3>
 <div class="container justify-content-center align-items-center">
 	<label class="text-primary">@result</label>
-	<button @onclick="() => Carouse()" class="btn btn-dark">Test</button>
+	<button @onclick="() => Carouse()" class="btn btn-dark">Go!</button>
+</div>
+<div>
+
 </div>
 
 @code {
 	public string result { get; set; } = string.Empty;
+	public List<CarousalModel> CarousalOptions { get; set; } = new();
+	public CarousalRepository _repo { get; set; } = new();
 
-	private Task Carouse()
+	protected override async Task OnInitializedAsync()
 	{
-		throw new NotImplementedException();
+		var results = await _repo.GetAllAsync();
+		CarousalOptions = results.ToList();
+	}
+
+	private void Carouse()
+	{
+		var random = new Random();
+		var index = random.Next(1,CarousalOptions.Count);
+		result = CarousalOptions[index].Description;
+
 	}
 
 }
