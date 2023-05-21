@@ -21,6 +21,7 @@ public static class MauiProgram
 		builder.Services.AddScoped<ICharacterRepository, CharacterRepository>();
 		builder.Services.AddScoped<ICarousalRepository, CarousalRepository>();
 		builder.Services.AddScoped<INamesRepository, NamesRepository>();
+		builder.Services.AddScoped<INpcRepository, NpcRepository>();
 
 		//var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "LastNames.txt");
 

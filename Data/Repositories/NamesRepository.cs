@@ -32,9 +32,9 @@ namespace DndMauiApp.Data.Repositories
 
 		public async Task<IEnumerable<NameModel>> GetAllAsync()
 		{
-			throw new NotImplementedException();
+			return await _names.Find(x => true).ToListAsync();
 		}
-
+		
 		public async Task<NameModel> AddAsync(NameModel entity)
 		{
 			await _names.InsertOneAsync(entity);

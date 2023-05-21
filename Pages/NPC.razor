@@ -1,24 +1,76 @@
 ﻿@page "/NPC"
 @using DndMauiApp.Data.Models
+@using DndMauiApp.Data.Repositories
+@using DndMauiApp.Data.Enums
 <h3>Npc</h3>
-<div class="container">
+<button class="btn btn-dark" @onclick="GenerateNpc">Generate a random Npc</button>
 
-<div class="card">
-	<div class="card-body">
-		<h5 class="card-title">Name: @npc.FirstName</h5>
-		<p class="card-text">Last Name: @npc.LastName</p>
-		<p class="card-text">Race: @npc.Race</p>
-		<p class="card-text">Profession: @npc.Profession</p>
-		<p class="card-text">Age: @npc.Age</p>
-		<p class="card-text">Alignment: @npc.Alignment</p>
-		<p class="card-text">Disposition: @npc.Disposition</p>
-		<p class="card-text">Description: @npc.Description</p>
-	</div>
-</div>
-</div>
+@foreach(var npc in npcList)
+		{
+			<div class="container d-flex justify-content-center align-items-center flex-wrap pt-2">
+				<div class="card">
+			<button class="btn btn-dark" @onclick="@(()=>Save(npc))">SaveNpc</button>
+			<div class="card-body">
+						<h5 class="card-title">Name: @npc.FirstName @npc.LastName</h5>
+						<p class="card-text">Race: @npc.Race</p>
+						<p class="card-text">Profession: @npc.Profession</p>
+						<p class="card-text">Age: @npc.Age</p>
+						<p class="card-text">Alignment: @npc.Alignment</p>
+						<p class="card-text">Economic Status: @npc.EconomicStatus</p>
+						<p class="card-text">Disposition: @npc.Disposition</p>
+						<p class="card-text">Description: @npc.Description</p>
+					</div>
+					<button class="btn btn-dark" @onclick="GenerateNpc">Another!</button>
+				</div>
+			</div>
+		}
+
 
 @code {
 
+	public List<Npc> npcList { get; set; } = new();
+	public List<Npc> npcListFromRepo { get; set; } = new();
 	public Npc npc { get; set; } = new();
+	public List<NameModel> NameList { get; set; }
+	public NamesRepository NamesRepo { get; set; } = new();
+	public NpcRepository NpcRepository { get; set; } = new();
+
+
+	protected override async Task OnInitializedAsync()
+	{
+		var results = await NamesRepo.GetAllAsync();
+		NameList = results.ToList();
+		var lkj = await NpcRepository.GetAllAsync();
+		npcList = lkj.ToList();
+	}
+
+	private void GenerateNpc()
+	{
+		var newNpc = new Npc();
+		var random = new Random();
+		var randomRace = random.Next(0, 57);
+		var randomProfession = random.Next(0, 30);
+		var randomAge = random.Next(15, 200);
+		var randomAlignment = random.Next(0, 9);
+		var randomEconomicStatus = random.Next(0, 9);
+		var randomDisposition = random.Next(0, 46);
+		newNpc.FirstName = NameList.Where(x => x.IsFirstName).ToList()[random.Next(0,NameList.Count(x => x.IsFirstName))].Name;
+		newNpc.LastName = NameList.Where(x => x.IsFirstName== false).ToList()[random.Next(0,NameList.Count(x => x.IsFirstName==false))].Name;
+		newNpc.Race = (Race)randomRace;
+		newNpc.Profession = (Profession)randomProfession;
+		newNpc.Age = randomAge;
+		newNpc.Alignment = (Alignment)randomAlignment;
+		newNpc.EconomicStatus = (EconomicStatus)randomEconomicStatus;
+		newNpc.Disposition = (Disposition)randomDisposition;
+		newNpc.Description = "This is a description";
+		npcList.Add(newNpc);
+
+	}
+
+
+	private async Task Save(Npc npc)
+	{
+		await NpcRepository.AddAsync(npc);
+	}
 
 }
