@@ -1,5 +1,5 @@
 ﻿using DndMauiApp.Data.Models;
-using Newtonsoft.Json;
+using MongoDB.Bson.IO;
 
 namespace DndMauiApp.Services;
 
@@ -14,7 +14,7 @@ public class CharacterService : ICharacterService
 			if (response.IsSuccessStatusCode)
 			{
 				var content = await response.Content.ReadAsStringAsync();
-				return JsonConvert.DeserializeObject<List<CharacterModel>>(content);
+				return new List<CharacterModel>();
 			}
 			else
 			{
